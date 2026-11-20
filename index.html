@@ -376,7 +376,7 @@ html.lockscroll body{min-height:100vh;min-height:100dvh} /* sinon le corps, pres
   <header class="bar gut col">
     <a class="mark" id="mark" href="#ciel" aria-label="56 notes, retour au ciel" data-en-aria="56 notes, back to the sky"><span class="n">56</span></a>
     <div class="bar-r">
-      <span class="beta-tag" title="Version d’essai">bêta</span>
+      <span class="beta-tag" title="Version d’essai">bêta 2.0</span>
       <button class="sound lang" id="langBtn" type="button" aria-label="Langue : français. Passer en anglais">FR</button>
       <button class="sound" id="prefsBtn" type="button" aria-label="Ton ciel : couleur et particules" data-en-aria="Your sky: colour and particles" aria-haspopup="dialog">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.4"/><path d="M10 2.6v2.6M10 14.8v2.6M2.6 10h2.6M14.8 10h2.6M4.8 4.8l1.7 1.7M13.5 13.5l1.7 1.7M4.8 15.2l1.7-1.7M13.5 6.5l1.7-1.7"/></svg>
@@ -556,9 +556,61 @@ html.lockscroll body{min-height:100vh;min-height:100dvh} /* sinon le corps, pres
 'use strict';
 
 // ===== Les soirs déjà écrits (le journal) =====
-var NOTES = {}; // bêta : aucun soir pré-rempli
-var WEEK_MODES = [ { root:"C", mode:"dorien", label:"do dorien" } ];
-var REFLEXIONS = []; // bêta : le carnet commence vide
+var NOTES = {
+  "2026-10-17":{note:"D",acc:"",oct:4,why:"Le premier soir. J’ai marché sans écouteurs et le bruit de la ville m’a semblé moins pressé que d’habitude."},
+  "2026-10-18":{note:"F",acc:"",oct:4,why:"Déjeuner trop long, café froid, beaucoup de rires. Une journée un peu froissée mais heureuse."},
+  "2026-10-19":{note:"E",acc:"b",oct:4,why:"J’ai remis de l’ordre dans un tiroir et retrouvé une carte postale que je croyais perdue."},
+  "2026-10-20":{note:"G",acc:"",oct:4,why:"Le ciel était rose derrière les immeubles. J’ai appelé papa juste pour lui raconter ça."},
+  "2026-10-21":{note:"C",acc:"",oct:4,why:"Une journée lente. Je n’ai pas fait tout ce que j’avais prévu, et finalement ce n’était pas grave."},
+  "2026-10-22":{note:"A",acc:"",oct:4,why:"Quelqu’un m’a tenu la porte alors que j’étais encore loin. Ce petit geste m’est resté."},
+  "2026-10-23":{note:"F",acc:"",oct:4,why:"Dîner improvisé avec ce qui restait dans le frigo. C’était meilleur que prévu."},
+  "2026-10-24":{note:"G",acc:"",oct:4,why:"J’ai pris le train sous la pluie. Les lumières glissaient sur la vitre comme des souvenirs."},
+  "2026-10-25":{note:"E",acc:"b",oct:4,why:"Dimanche calme, draps propres et livre commencé. Je me suis sentie exactement à ma place."},
+  "2026-10-26":{note:"D",acc:"",oct:4,why:"Une remarque m’a contrariée plus longtemps qu’elle n’aurait dû. Le soir l’a rendue plus petite."},
+  "2026-10-28":{note:"B",acc:"b",oct:3,why:"Fatiguée aujourd’hui. J’ai seulement fait l’essentiel, puis je me suis préparé une soupe."},
+  "2026-10-29":{note:"F",acc:"",oct:4,why:"Une chanson entendue dans une boutique m’a rappelé un été ancien. J’ai souri toute seule."},
+  "2026-10-30":{note:"A",acc:"",oct:4,why:"J’ai terminé quelque chose que je repoussais depuis des semaines. Une petite victoire très légère."},
+  "2026-10-31":{note:"C",acc:"",oct:5,why:"Des enfants déguisés couraient dans la rue. La nuit avait l’air de jouer avec eux."},
+  "2026-11-01":{note:"G",acc:"",oct:4,why:"Long appel avec Claire. On a parlé de choses sérieuses puis ri pour presque rien."},
+  "2026-11-02":{note:"E",acc:"b",oct:4,why:"Retour au rythme ordinaire. J’ai aimé retrouver ma tasse sur le bureau et mes habitudes."},
+  "2026-11-03":{note:"D",acc:"",oct:4,why:"Le marché sentait les pommes et les feuilles mouillées. J’ai acheté trop de fleurs."},
+  "2026-11-04":{note:"F",acc:"",oct:4,why:"Journée dense, mais une vraie conversation au milieu. Elle a ouvert une fenêtre dans ma tête."},
+  "2026-11-05":{note:"A",acc:"b",oct:4,why:"Je me suis trompée de chemin et j’ai découvert une petite librairie. Je crois que j’y retournerai."},
+  "2026-11-06":{note:"G",acc:"",oct:4,why:"Vendredi doux. J’ai cuisiné en musique et laissé le téléphone dans une autre pièce."},
+  "2026-11-07":{note:"C",acc:"",oct:4,why:"Matin froid, promenade au parc. Les arbres étaient presque nus, mais pas tout à fait."},
+  "2026-11-08":{note:"E",acc:"b",oct:4,why:"Je n’ai parlé à presque personne aujourd’hui. Le silence ne m’a pas pesé."},
+  "2026-11-09":{note:"F",acc:"",oct:4,why:"Une réunion difficile s’est mieux passée que prévu. J’avais préparé mes mots et ils sont venus."},
+  "2026-11-11":{note:"D",acc:"",oct:4,why:"Jour férié sans programme. J’ai marché jusqu’à la rivière et regardé l’eau longtemps."},
+  "2026-11-12":{note:"G",acc:"",oct:4,why:"J’ai reçu un message inattendu. Quelques phrases peuvent changer toute la couleur d’un après-midi."},
+  "2026-11-13":{note:"B",acc:"b",oct:4,why:"Un peu de mélancolie ce soir, sans raison précise. Je lui ai fait une place sans chercher à la chasser."},
+  "2026-11-14":{note:"A",acc:"",oct:4,why:"Déjeuner en famille. Tout le monde parlait en même temps et c’était réconfortant."},
+  "2026-11-15":{note:"F",acc:"",oct:4,why:"J’ai rangé les plantes près de la fenêtre pour l’hiver. La maison semble prête maintenant."},
+  "2026-11-16":{note:"E",acc:"b",oct:4,why:"Lundi gris, puis un rayon de soleil exactement au moment de sortir. Je l’ai pris comme un signe."},
+  "2026-11-18":{note:"C",acc:"",oct:5,why:"Très bonne nouvelle aujourd’hui. Je l’ai relue plusieurs fois avant d’y croire vraiment."},
+  "2026-11-19":{note:"G",acc:"",oct:4,why:"J’ai raconté ma bonne nouvelle autour de moi. La joie grandit étrangement quand on la partage."},
+  "2026-11-20":{note:"D",acc:"",oct:5,why:"Ce soir, j’ai regardé toutes les étoiles déjà posées. Le mois ressemble davantage à une histoire qu’à une liste de jours."}
+};
+var WEEK_MODES = [
+  {root:"C",mode:"dorien",label:"do dorien"},
+  {root:"F",mode:"lydien",label:"fa lydien"},
+  {root:"G",mode:"mixolydien",label:"sol mixolydien"},
+  {root:"D",mode:"eolien",label:"ré éolien"},
+  {root:"E",mode:"phrygien",label:"mi phrygien"},
+  {root:"A",mode:"dorien",label:"la dorien"},
+  {root:"C",mode:"ionien",label:"do ionien"},
+  {root:"B",mode:"locrien",label:"si locrien"}
+];
+var REFLEXIONS = [
+  {d:"2026-10-18",title:"Commencer sans savoir",paras:["Je ne sais pas encore ce que ces notes vont raconter.","Peut-être qu’il suffit de revenir chaque soir et de laisser une trace, même minuscule."]},
+  {d:"2026-10-23",title:"Les choses ordinaires",paras:["Je pensais qu’il fallait attendre les grandes journées pour écrire.","Mais ce sont peut-être la soupe, le café froid et les fenêtres allumées qui composent vraiment une vie."]},
+  {d:"2026-10-29",title:"Une chanson retrouvée",paras:["La mémoire a parfois besoin de trois accords seulement.","Pendant quelques secondes, j’avais de nouveau vingt ans et l’été ne devait jamais finir."]},
+  {d:"2026-11-01",title:"Ce qui reste d’une conversation",paras:["Après avoir raccroché avec Claire, la pièce semblait moins vide.","Les amis savent garder des versions de nous que nous oublions parfois."]},
+  {d:"2026-11-05",title:"Le mauvais chemin",paras:["Je veux me souvenir de la librairie découverte aujourd’hui.","Se tromper de rue n’est pas toujours perdre son temps."]},
+  {d:"2026-11-08",title:"Dimanche silencieux",paras:["Je n’ai rien accompli de remarquable.","J’ai lu, arrosé les plantes et regardé la lumière changer. C’était suffisant."]},
+  {d:"2026-11-13",title:"Laisser la mélancolie s’asseoir",paras:["Je n’ai pas essayé d’aller mieux tout de suite.","La tristesse légère est repartie d’elle-même, comme une visiteuse qui avait seulement besoin qu’on l’écoute."]},
+  {d:"2026-11-16",title:"Préparer l’hiver",paras:["Les plantes sont maintenant serrées près de la fenêtre.","Prendre soin d’elles me donne l’impression discrète de prendre soin de la maison entière."]},
+  {d:"2026-11-20",title:"Trente-deux lumières",paras:["En regardant le ciel ce soir, je vois les jours difficiles autant que les jours heureux.","Ils ne brillent pas tous de la même façon, mais ensemble ils commencent à former quelque chose qui me ressemble."]}
+];
 // ==============================================
 
 var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -603,7 +655,7 @@ function lerp(a,b,t){return a+(b-a)*t;}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 // ----- les langues : le français d'origine, et l'anglais -----
 // L("texte français","English text") choisit selon la langue. Les mots de la personne (récits, réflexions) restent tels qu'ils ont été écrits.
-var LANG=(function(){ try{ var p=JSON.parse(localStorage.getItem('56n-prefs')||'null'); if(p&&(p.langue==="fr"||p.langue==="en")) return p.langue; }catch(e){} return /^fr/i.test(navigator.language||"fr")?"fr":"en"; })();
+var LANG=(function(){ try{ var p=JSON.parse(localStorage.getItem('56n2-prefs')||'null'); if(p&&(p.langue==="fr"||p.langue==="en")) return p.langue; }catch(e){} return /^fr/i.test(navigator.language||"fr")?"fr":"en"; })();
 function L(fr,en){ return LANG==="en"?en:fr; }
 function locale(){ return LANG==="en"?"en-GB":"fr-FR"; }
 var UNITS_EN=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
@@ -667,15 +719,15 @@ function moonSvg(svg,age){
 }
 
 // ===== Les 56 soirs =====
-var START=(function(){ var k='56n-debut',v=null; try{ v=localStorage.getItem(k); }catch(e){}
+var START=(function(){ var k='56n2-debut',v=null; try{ v=localStorage.getItem(k); }catch(e){}
   if(v&&/^\d{4}-\d\d-\d\d$/.test(v)){ var p=v.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
-  var n=new Date(),d=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  var d=new Date(2026,9,17);
   try{ localStorage.setItem(k,d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')); }catch(e){}
-  return d; })(); // bêta : le premier soir est le jour de la première ouverture
+  return d; })(); // bêta 2.0 : le récit de démonstration commence le 17 octobre 2026
 var nowD=new Date(), todayMid=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());
 var TODAY_I=Math.round((todayMid-START)/864e5);
 var DAYS=[], LIVED=[], dbEntries={}, localEntries={};
-try{ localEntries=JSON.parse(lsGet('56n-soirs')||'{}')||{}; }catch(e){ localEntries={}; }
+try{ localEntries=JSON.parse(lsGet('56n2-soirs')||'{}')||{}; }catch(e){ localEntries={}; }
 for(var i=0;i<56;i++){
   var dt=new Date(START.getFullYear(),START.getMonth(),START.getDate()+i);
   DAYS.push({i:i,w:Math.floor(i/7),d:i%7,date:dt,iso:isoOf(dt),moon:moonAge(dt),x:0,y:0,flash:-1e9,phase:rnd(i*5.31)*6.283});
@@ -784,7 +836,7 @@ function droneOff(){
 // Si la clé répète des notes (moins de six notes différentes), on complète avec la plus grave à l'octave.
 var MOTIF=null;
 // la clé n'est gardée qu'en mémoire, le temps que la page est ouverte : on la rejoue à chaque ouverture
-(function(){ try{ sessionStorage.removeItem('56n-motif'); sessionStorage.removeItem('56n-open'); }catch(e){} })();
+(function(){ try{ sessionStorage.removeItem('56n2-motif'); sessionStorage.removeItem('56n2-open'); }catch(e){} })();
 function setMotif(seq){ if(!/^[0-6]{6}$/.test(seq)) return; MOTIF=seq.split("").map(Number); if(drone&&!amb.running) ambStart(); }
 // La couleur sonore : la base que l’auteur a gardée dans l'atelier du son le 20 novembre 2026 à 22 h 36
 // (https://claude.ai/artifact/5NXe9SsBkWzodchqnW1KgC, document reglages/base). Mêmes noms et mêmes formules que l'atelier.
@@ -1102,11 +1154,11 @@ function getDb(){
   return window.claude.use('db').catch(function(){return null;});
 }
 function saveLock(data){
-  if(db){ return db.doc('verrou/cle').set(data).then(function(){ lockWhere="db"; }).catch(function(){ lsSet('56n-lock',JSON.stringify(data)); lockWhere="local"; }); }
-  lsSet('56n-lock',JSON.stringify(data)); lockWhere="local"; return Promise.resolve();
+  if(db){ return db.doc('verrou/cle').set(data).then(function(){ lockWhere="db"; }).catch(function(){ lsSet('56n2-lock',JSON.stringify(data)); lockWhere="local"; }); }
+  lsSet('56n2-lock',JSON.stringify(data)); lockWhere="local"; return Promise.resolve();
 }
 function loadLock(){
-  var local=null; try{ local=JSON.parse(lsGet('56n-lock')||'null'); }catch(e){}
+  var local=null; try{ local=JSON.parse(lsGet('56n2-lock')||'null'); }catch(e){}
   if(!db) return Promise.resolve(local?{d:local,w:"local"}:null);
   return db.doc('verrou/cle').get().then(function(s){
     var d=s.exists?s.data():null;
@@ -1485,11 +1537,11 @@ function prefsSay(t){ $('prefsNote').textContent=t; }
 var prefsTimer=null;
 function savePrefs(){
   var p={accent:RAINBOW?"rainbow":ACC,particules:PART,langue:LANG,modifie:new Date().toISOString()};
-  lsSet('56n-prefs',JSON.stringify(p));
+  lsSet('56n2-prefs',JSON.stringify(p));
   clearTimeout(prefsTimer); prefsTimer=setTimeout(function(){ if(db) db.doc('preferences/apparence').set(p).catch(function(){}); },500);
 }
 function loadPrefs(){ // d'abord cet appareil (tout de suite), puis la base (pour suivre la personne)
-  try{ var l=JSON.parse(lsGet('56n-prefs')||'null'); if(l){ if(l.accent) applyAccent(l.accent); if(l.particules) applyParticles(l.particules,false); } }catch(e){}
+  try{ var l=JSON.parse(lsGet('56n2-prefs')||'null'); if(l){ if(l.accent) applyAccent(l.accent); if(l.particules) applyParticles(l.particules,false); } }catch(e){}
 }
 function syncPrefsFromDb(){
   if(!db) return; db.doc('preferences/apparence').get().then(function(snap){
@@ -1497,7 +1549,7 @@ function syncPrefsFromDb(){
     if(d.accent&&d.accent!==(RAINBOW?"rainbow":ACC)){ applyAccent(d.accent); changed=true; }
     if(d.particules&&Math.abs(d.particules-PART)>.001){ applyParticles(d.particules,true); changed=true; }
     if((d.langue==="fr"||d.langue==="en")&&d.langue!==LANG){ setLang(d.langue,false); changed=true; }
-    if(changed) lsSet('56n-prefs',JSON.stringify({accent:RAINBOW?"rainbow":ACC,particules:PART,langue:LANG,modifie:d.modifie||""}));
+    if(changed) lsSet('56n2-prefs',JSON.stringify({accent:RAINBOW?"rainbow":ACC,particules:PART,langue:LANG,modifie:d.modifie||""}));
   }).catch(function(){});
 }
 $('prefsReset').addEventListener('click',function(){ applyAccent(DEFAULT_PREFS.accent); applyParticles(DEFAULT_PREFS.particules,true); prefsSay(L("Les réglages d’origine.","The original settings.")); savePrefs(); });
@@ -1682,7 +1734,7 @@ $('doneRedo').addEventListener('click',function(){
   if(!rb.classList.contains('ask')){ rb.classList.add('ask'); rb.textContent=L("Effacer la note de ce soir et recommencer ?","Erase tonight’s note and start again?"); clearTimeout(redoTimer); redoTimer=setTimeout(function(){ rb.classList.remove('ask'); rb.textContent=L("Reprendre la note de ce soir","Redo tonight’s note"); },5000); return; }
   clearTimeout(redoTimer);
   var old=entryFor(td.iso); if(old&&old.why){ story.value=old.why; storyChanged(); }
-  delete localEntries[td.iso]; lsSet('56n-soirs',JSON.stringify(localEntries));
+  delete localEntries[td.iso]; lsSet('56n2-soirs',JSON.stringify(localEntries));
   delete dbEntries[td.iso];
   if(soirsCol){ soirsCol.doc(td.iso).delete().catch(function(){}); }
   tr.set=false; tr.ghost=null; tr.heardFor=null; tr.hear=null;
@@ -1772,7 +1824,7 @@ $('presSkip').addEventListener('click',function(){ if(breatheOnly){ breatheOnly=
 
 // ----- Raconter -----
 var story=$('story');
-function draftKey(){ var td=today(); return td?'56n-draft-'+td.iso:null; }
+function draftKey(){ var td=today(); return td?'56n2-draft-'+td.iso:null; }
 (function(){ var k=draftKey(); if(k){ var v=lsGet(k); if(v) story.value=v; } })();
 function storyChanged(){ $('storyNext').disabled=story.value.trim().length<3; var k=draftKey(); if(k) lsSet(k,story.value); }
 story.addEventListener('input',storyChanged); storyChanged();
@@ -2013,7 +2065,7 @@ $('trPose').addEventListener('click',function(){
   var btn=$('trPose'); btn.disabled=true;
   function done(where){
     btn.disabled=false; var k=draftKey(); if(k) lsDel(k);
-    localEntries[td.iso]=entry; lsSet('56n-soirs',JSON.stringify(localEntries));
+    localEntries[td.iso]=entry; lsSet('56n2-soirs',JSON.stringify(localEntries));
     showStepContempler(td,where);
   }
   if(soirsCol){ soirsCol.doc(td.iso).set(entry).then(function(){ done("db"); }).catch(function(){ done("local"); }); }
@@ -2046,7 +2098,7 @@ function glyph(svg,title){
 function dateOf(iso){ var p=iso.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
 // ----- les pensées : celles écrites dans le code (avant l'app), plus celles écrites ou dites dans le carnet (base de l'app, ou cet appareil) -----
 var dbRefl={},localRefl={},reflCol=null,openDay=null,readerItem=null;
-try{ localRefl=JSON.parse(lsGet('56n-reflexions')||'{}')||{}; }catch(e){ localRefl={}; }
+try{ localRefl=JSON.parse(lsGet('56n2-reflexions')||'{}')||{}; }catch(e){ localRefl={}; }
 function validRefl(r){ return !!r&&typeof r.d==="string"&&/^\d{4}-\d\d-\d\d$/.test(r.d)&&typeof r.title==="string"&&Array.isArray(r.paras)&&r.paras.length>0&&r.paras.every(function(x){ return typeof x==="string"; }); }
 function allRefl(){
   var out=REFLEXIONS.map(function(r,i){ return {id:"src-"+i,d:r.d,title:r.title,paras:r.paras,created:r.d+"T21:0"+i,mine:false}; }),seen={};
@@ -2116,17 +2168,17 @@ $('readerDel').addEventListener('click',function(){
   var del=$('readerDel'),r=readerItem; if(!r||!r.mine) return;
   if(!del.classList.contains('ask')){ del.classList.add('ask'); del.textContent=L("L’effacer pour de bon ?","Erase it for good?"); clearTimeout(delTimer); delTimer=setTimeout(function(){ del.classList.remove('ask'); del.textContent=L("Effacer cette pensée","Erase this thought"); },5000); return; }
   clearTimeout(delTimer);
-  delete localRefl[r.id]; lsSet('56n-reflexions',JSON.stringify(localRefl)); delete dbRefl[r.id];
+  delete localRefl[r.id]; lsSet('56n2-reflexions',JSON.stringify(localRefl)); delete dbRefl[r.id];
   if(reflCol) reflCol.doc(r.id).delete().catch(function(){});
   closeReader(); renderCarnet(); window.scrollTo(0,0);
 });
 // ----- une nouvelle pensée : écrite, ou dite à voix haute -----
 var penseeTA=$('pensee'),penseeTI=$('penseeTitle');
-function penseeChanged(){ $('penseeSave').disabled=penseeTA.value.trim().length<3; lsSet('56n-pensee-draft',JSON.stringify({t:penseeTI.value,x:penseeTA.value})); }
+function penseeChanged(){ $('penseeSave').disabled=penseeTA.value.trim().length<3; lsSet('56n2-pensee-draft',JSON.stringify({t:penseeTI.value,x:penseeTA.value})); }
 penseeTA.addEventListener('input',penseeChanged); penseeTI.addEventListener('input',penseeChanged);
 micTargets.push({btn:$('micBtn2'),ta:penseeTA,partial:$('partial2'),changed:penseeChanged});
 function openComposer(){
-  try{ var dr=JSON.parse(lsGet('56n-pensee-draft')||'null'); if(dr){ penseeTI.value=dr.t||""; penseeTA.value=dr.x||""; } }catch(e){}
+  try{ var dr=JSON.parse(lsGet('56n2-pensee-draft')||'null'); if(dr){ penseeTI.value=dr.t||""; penseeTA.value=dr.x||""; } }catch(e){}
   $('compDate').textContent=cap(todayMid.toLocaleDateString(locale(),{weekday:'long',day:'numeric',month:'long'}))+" · "+moonName(moonAge(todayMid));
   if(!penseeTA.getAttribute('placeholder')) penseeTA.setAttribute('placeholder',L("Ce qui te traverse. Écris, ou touche « Parler ».","What’s going through you. Write, or touch “Speak”."));
   $('composer').hidden=false; $('penseeOpen').hidden=true; penseeChanged();
@@ -2142,8 +2194,8 @@ $('penseeSave').addEventListener('click',function(){
   var doc={d:isoOf(todayMid),title:(penseeTI.value.trim()||autoTitle(paras[0])),paras:paras,created:new Date().toISOString(),source:"app"};
   var id="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),btn=$('penseeSave'); btn.disabled=true;
   function done(where){
-    if(where==="local"){ localRefl[id]=doc; lsSet('56n-reflexions',JSON.stringify(localRefl)); } else dbRefl[id]=doc;
-    lsDel('56n-pensee-draft'); penseeTA.value=""; penseeTI.value=""; closeComposer(); openDay=doc.d; renderCarnet();
+    if(where==="local"){ localRefl[id]=doc; lsSet('56n2-reflexions',JSON.stringify(localRefl)); } else dbRefl[id]=doc;
+    lsDel('56n2-pensee-draft'); penseeTA.value=""; penseeTI.value=""; closeComposer(); openDay=doc.d; renderCarnet();
     try{ var ac=audio(); glass(79,ac.currentTime+.02,.35); glass(84,ac.currentTime+.18,.25); }catch(e){}
     toast(where==="db"?L("Ta pensée a rejoint le carnet.","Your thought has joined the notebook."):L("Ta pensée a rejoint le carnet, sur cet appareil seulement.","Your thought has joined the notebook, on this device only."));
   }
